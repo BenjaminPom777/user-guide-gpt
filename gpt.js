@@ -1,6 +1,6 @@
 const OpenAI = require("openai");
 
-const openai = new OpenAI({ apiKey: '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' });
+const openai = new OpenAI({ apiKey: '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' });
 
 async function askChatGpt(userContent, systemContent) {
     try {
@@ -22,7 +22,6 @@ async function askChatGpt(userContent, systemContent) {
 
 
 async function flow(userInput) {
-    // Example user inputs for testing
     let stringAnswer = '';
     const links=[];
 
@@ -43,24 +42,16 @@ async function flow(userInput) {
         if (itemListAnswer.includes(',')) {
             const itemList = itemListAnswer.split(',');
             for (const item of itemList) {
-                // stringAnswer += `https://www.10bestdeals.co.uk/product/${encodeURIComponent(item)}/\n`;
-                // console.log(`https://www.10bestdeals.co.uk/product/${encodeURIComponent(item)}/`)
                 links.push(`https://www.10bestdeals.co.uk/product/${encodeURIComponent(item)}/`)
             }
         } else {
-            stringAnswer += 'Unfortunately chat gpt was not able to find items in user guide';
-            console.log('Unfortunately chat gpt was not able to find items in user guide')
+            stringAnswer += 'Unfortunately chat gpt was not able to find items in user guide';            
         }
     } else {
-        stringAnswer = 'user input is not related to buying guide'
-        console.log('user input is not related to buying guide')
+        stringAnswer = 'user input is not related to buying guide'        
     }
     return {stringAnswer, links};
 }
-// const userInput1 = "Generate a buying guide for air fryer";
-// const userInput2 = "Who will win the superbowl?";
-
-// flow(userInput1);
 
 module.exports = {
     flow

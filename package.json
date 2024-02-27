@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon --ignore '*.xlsx' index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.9",
+    "exceljs": "^4.4.0",
     "express": "4.17.1",
-    "openai": "^4.28.0"
+    "openai": "^4.28.0",
+    "puppeteer": "^22.3.0"
   }
 }

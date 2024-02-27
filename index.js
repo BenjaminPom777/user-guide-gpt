@@ -1,5 +1,9 @@
 const express = require('express');
-const { flow } = require('./app');
+const ExcelJS = require('exceljs');
+const fs = require('fs');
+
+const { flow } = require('./gpt');
+const { scrapeAutocomplete } = require('./start');
 
 const app = express();
 const port = 3000;
@@ -19,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 // Define a route to handle form submission
-app.post('/add', async (req, res) => {
+app.post('/buying-guide', async (req, res) => {
   try {
     const inputValue = req.body.input1;
     // Do something with the input value, e.g., save it to a database
@@ -34,7 +38,43 @@ app.post('/add', async (req, res) => {
   }
 });
 
-// Start the server
+app.post('/scrape-amazon-ac', async (req, res) => {
+  try {
+    const inputValue = req.body.input2;
+    const autocompleteList = await scrapeAutocomplete(inputValue);
+
+     // Create Excel workbook and worksheet
+     const workbook = new ExcelJS.Workbook();
+     const worksheet = workbook.addWorksheet('Autocomplete Data');
+ 
+   // Set up columns
+   worksheet.columns = [
+    { header: 'Autocomplete Suggestions', key: 'suggestion' }
+  ];
+
+     // Add data to worksheet
+     autocompleteList.forEach(suggestion => {
+       worksheet.addRow({ suggestion });
+     });
+     
+     const fileName = `autocomplete_data.xlsx`;
+      
+     await workbook.xlsx.writeFile(fileName);
+ 
+     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+     const fileStream = fs.createReadStream(fileName);
+     fileStream.pipe(res);
+    res.send('your download started')
+ 
+  } catch (error) {
+    console.error(error);
+    if(error.name == 'TimeoutError'){}
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
