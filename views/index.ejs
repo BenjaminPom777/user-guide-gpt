@@ -16,7 +16,7 @@
       <label for="input1"><%= input1Label %>:</label>
       <input type="text" id="input1" name="input1" required>
       <br>
-      <button type="submit">Submit Buying Guide Input</button>
+      <button type="submit" id="gptSubmitBtn">Submit</button>
     </form>
   </div>
 
@@ -27,14 +27,18 @@
       <label for="input2">Input 2:</label>
       <input type="text" id="input2" name="input2" required>
       <br>
-      <button type="submit" id="scrapeSubmitBtn">Submit Scrape Amazon Autocomplete</button>
+      <button type="submit" id="scrapeSubmitBtn">Submit</button>
     </form>
   </div>
 
   <script>
     function disableInput() {
+      document.getElementById('input1').disabled = true;
+      document.getElementById('gptSubmitBtn').disabled = true;
       document.getElementById('input2').disabled = true;
       document.getElementById('scrapeSubmitBtn').disabled = true;
+
+
     }
   </script>
 </body>
